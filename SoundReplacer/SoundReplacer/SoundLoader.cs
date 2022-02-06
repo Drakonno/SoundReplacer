@@ -13,29 +13,24 @@ namespace SoundReplacer
 { 
     internal static class SoundLoader
     {
-        public static Dictionary<string, List<string>> GlobalSoundDictionary = new Dictionary<string, List<string>>();
-        public static List<string> GlobalSoundList = new List<string>();
+        public static string BaseDirectory = Environment.CurrentDirectory + "\\UserData\\SoundReplacer";
+        public static Dictionary<string, List<string>> GlobalSoundDictionary = new Dictionary<string, List<string>>(); 
         private static AudioClip _cachedEmpty;
-         
-
+          
         public static void GetSoundLists()
         {
-            GlobalSoundList.Add("None");
-            GlobalSoundList.Add("Default");
-            GlobalSoundList.Add("Random");
-
-            var folderPath = Environment.CurrentDirectory + "\\UserData\\SoundReplacer";
-            if (!Directory.Exists(folderPath))
+            
+            if (!Directory.Exists(BaseDirectory))
             {
-                Directory.CreateDirectory(folderPath);
+                Directory.CreateDirectory(BaseDirectory);
             }
 
             // Load single audio files.
             Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"Single files:");
-            CacheAudioPathFromDirectory(folderPath);
+            CacheAudioPathFromDirectory(BaseDirectory);
 
             // Load files from directories.
-            var directiories = Directory.GetDirectories(folderPath);
+            var directiories = Directory.GetDirectories(BaseDirectory);
             foreach (var directory in directiories)
             {
                 CacheAudioPathFromDirectory(directory);
@@ -77,7 +72,6 @@ namespace SoundReplacer
                     fileInfo.Extension == ".mp3" ||
                     fileInfo.Extension == ".wav")
                 {
-                    GlobalSoundList.Add($"{directoryName}\\{fileInfo.Name}");
                     sounds.Add(fileInfo.Name);
                 }
             }
@@ -86,7 +80,7 @@ namespace SoundReplacer
 
         private static string GetFullPath(string name)
         {
-            var path = Environment.CurrentDirectory + "\\UserData\\SoundReplacer\\" + name;
+            var path = $"{BaseDirectory}\\{name}";
             var fileInfo = new FileInfo(path);
             return fileInfo.FullName;
         }
@@ -124,6 +118,16 @@ namespace SoundReplacer
                 Plugin.CurrentConfig.SuccessSound = text;
             if (Plugin.CurrentConfig.MenuMusic == name)
                 Plugin.CurrentConfig.MenuMusic = text;
+        }
+
+        public static AudioClip[] LoadAudioClips(string directory)
+        {
+            List<AudioClip> output = new List<AudioClip>();
+            foreach(var file in GlobalSoundDictionary[directory])
+            {
+                output.Add(LoadAudioClip($"{directory}\\{file}"));
+            }
+            return output.ToArray();
         }
 
         public static AudioClip LoadAudioClip(string name)

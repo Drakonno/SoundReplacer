@@ -36,7 +36,6 @@ namespace SoundReplacer
         [UIComponent("ddl-fail-sound")]
         DropDownListSetting ddlsFailSound;
 
-
         // Actions
         [UIAction("#directory-list-reload")]
         public void OnDirectoryListReload() => ReloadDirectoriesList();
@@ -89,8 +88,6 @@ namespace SoundReplacer
                 }
 
                 parserParams.EmitEvent("directory-list-reload");
-                NotifyPropertyChanged("good-hitsound-list");
-                NotifyPropertyChanged("good-hitsound-list-value");
             }
         }
 
@@ -113,8 +110,6 @@ namespace SoundReplacer
                 }
 
                 parserParams.EmitEvent("directory-list-reload");
-                NotifyPropertyChanged("bad-hitsound-list");
-                NotifyPropertyChanged("bad-hitsound-list-value");
             }
         }
 
@@ -137,8 +132,6 @@ namespace SoundReplacer
                 }
 
                 parserParams.EmitEvent("directory-list-reload");
-                NotifyPropertyChanged("menu-music-list");
-                NotifyPropertyChanged("menu-music-list-value");
             }
         }
 
@@ -161,8 +154,6 @@ namespace SoundReplacer
                 }
 
                 parserParams.EmitEvent("directory-list-reload");
-                NotifyPropertyChanged("click-sound-list");
-                NotifyPropertyChanged("click-sound-list-value");
             }
         }
 
@@ -185,8 +176,6 @@ namespace SoundReplacer
                 }
 
                 parserParams.EmitEvent("directory-list-reload");
-                NotifyPropertyChanged("success-sound-list");
-                NotifyPropertyChanged("success-sound-list-value");
             }
         }
 
@@ -209,15 +198,13 @@ namespace SoundReplacer
                 }
 
                 parserParams.EmitEvent("directory-list-reload");
-                NotifyPropertyChanged("fail-sound-list");
-                NotifyPropertyChanged("fail-sound-list-value");
             }
         }
         // --------------
          
         // Values ---
         [UIValue("good-hitsound-list")]
-        public List<object> SettingsGoodHitSoundList = new List<object>(SoundLoader.GlobalSoundList);
+        public List<object> SettingsGoodHitSoundList = new List<object>(SoundLoader.GlobalSoundDictionary[Plugin.CurrentConfig.GoodHitSoundDirectory]);
 
         [UIValue("good-hitsound-list-value")]
         protected string SettingCurrentGoodHitSound
@@ -227,7 +214,7 @@ namespace SoundReplacer
         }
 
         [UIValue("bad-hitsound-list")]
-        public List<object> SettingsBadHitSoundList = new List<object>(SoundLoader.GlobalSoundList);
+        public List<object> SettingsBadHitSoundList = new List<object>(SoundLoader.GlobalSoundDictionary[Plugin.CurrentConfig.BadHitSoundDirectory]);
 
         [UIValue("bad-hitsound-list-value")]
         protected string SettingCurrentBadHitSound
@@ -237,7 +224,7 @@ namespace SoundReplacer
         }
 
         [UIValue("menu-music-list")]
-        public List<object> SettingsMenuMusicList = new List<object>(SoundLoader.GlobalSoundList);
+        public List<object> SettingsMenuMusicList = new List<object>(SoundLoader.GlobalSoundDictionary[Plugin.CurrentConfig.MenuMusicDirectory]);
 
         [UIValue("menu-music-list-value")]
         protected string SettingCurrentMenuMusic
@@ -251,7 +238,7 @@ namespace SoundReplacer
         }
 
         [UIValue("click-sound-list")]
-        public List<object> SettingsClickSoundList = new List<object>(SoundLoader.GlobalSoundList);
+        public List<object> SettingsClickSoundList = new List<object>(SoundLoader.GlobalSoundDictionary[Plugin.CurrentConfig.ClickSoundDirectory]);
 
         [UIValue("click-sound-list-value")]
         protected string SettingCurrentClickSound
@@ -265,7 +252,7 @@ namespace SoundReplacer
         }
 
         [UIValue("success-sound-list")]
-        public List<object> SettingsSuccessSoundList = new List<object>(SoundLoader.GlobalSoundList);
+        public List<object> SettingsSuccessSoundList = new List<object>(SoundLoader.GlobalSoundDictionary[Plugin.CurrentConfig.SuccessSoundDirectory]);
 
         [UIValue("success-sound-list-value")]
         protected string SettingCurrentSuccessSound
@@ -275,7 +262,7 @@ namespace SoundReplacer
         }
 
         [UIValue("fail-sound-list")]
-        public List<object> SettingsFailSoundList = new List<object>(SoundLoader.GlobalSoundList);
+        public List<object> SettingsFailSoundList = new List<object>(SoundLoader.GlobalSoundDictionary[Plugin.CurrentConfig.FailSoundDirectory]);
 
         [UIValue("fail-sound-list-value")]
         protected string SettingCurrentFailSound

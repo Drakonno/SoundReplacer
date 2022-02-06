@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
@@ -11,9 +7,10 @@ namespace SoundReplacer.Patches
     public class ClickSoundPatch
     {
         private static List<AudioClip> _originalClickClips;
-        
+
         private static AudioClip[] _lastClickClips;
         private static string _lastClickSelected;
+        private static string _lastDirectorySelected;
 
         [HarmonyPatch(typeof(BasicUIAudioManager))]
         [HarmonyPatch("Start", MethodType.Normal)]
@@ -37,14 +34,22 @@ namespace SoundReplacer.Patches
                 }
                 else
                 {
-                    if (_lastClickSelected == Plugin.CurrentConfig.ClickSound)
+                    if (_lastClickSelected == Plugin.CurrentConfig.ClickSound && _lastClickSelected == Plugin.CurrentConfig.ClickSoundDirectory)
                     {
                         ____clickSounds = _lastClickClips;
                     }
                     else
                     {
+                        _lastDirectorySelected = Plugin.CurrentConfig.ClickSoundDirectory;
                         _lastClickSelected = Plugin.CurrentConfig.ClickSound;
-                        _lastClickClips = new AudioClip[] { SoundLoader.LoadAudioClip(_lastClickSelected) };
+                        if (_lastClickSelected == "Random")
+                        {
+                            _lastClickClips = SoundLoader.LoadAudioClips(_lastDirectorySelected);
+                        }
+                        else
+                        {
+                            _lastClickClips = new AudioClip[] { SoundLoader.LoadAudioClip($"{_lastDirectorySelected}\\{_lastClickSelected}") };
+                        }
                         ____clickSounds = _lastClickClips;
                     }
                 }
