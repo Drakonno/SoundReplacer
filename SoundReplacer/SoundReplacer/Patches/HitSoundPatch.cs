@@ -16,9 +16,11 @@ namespace SoundReplacer.Patches
 
         private static AudioClip[] _lastBadAudioClips;
         private static string _lastBadSelected;
+        private static string _lastBadDirectory;
 
         private static AudioClip[] _lastGoodAudioClips;
         private static string _lastGoodSelected;
+        private static string _lastGoodDirectory;
 
         [HarmonyPatch(typeof(NoteCutSoundEffect))]
         [HarmonyPatch("Awake", MethodType.Normal)]
@@ -35,20 +37,29 @@ namespace SoundReplacer.Patches
                 if (Plugin.CurrentConfig.BadHitSound == "None")
                 {
                     ____badCutSoundEffectAudioClips = new AudioClip[] { SoundLoader.GetEmptyClip() };
-                } else if (Plugin.CurrentConfig.BadHitSound == "Default")
+                }
+                else if (Plugin.CurrentConfig.BadHitSound == "Default")
                 {
                     ____badCutSoundEffectAudioClips = _originalBadSounds.ToArray();
                 }
                 else
                 {
-                    if (_lastBadSelected == Plugin.CurrentConfig.BadHitSound)
+                    if (_lastBadSelected == Plugin.CurrentConfig.BadHitSound && _lastBadDirectory == Plugin.CurrentConfig.BadHitSoundDirectory)
                     {
                         ____badCutSoundEffectAudioClips = _lastBadAudioClips;
                     }
                     else
                     {
                         _lastBadSelected = Plugin.CurrentConfig.BadHitSound;
-                        _lastBadAudioClips = new AudioClip[] { SoundLoader.LoadAudioClip(_lastBadSelected) };
+                        _lastBadDirectory = Plugin.CurrentConfig.BadHitSoundDirectory;
+                        if (Plugin.CurrentConfig.BadHitSound == "Random")
+                        {
+                            _lastBadAudioClips = SoundLoader.LoadAudioClips(_lastBadDirectory);
+                        }
+                        else
+                        {
+                            _lastBadAudioClips = new AudioClip[] { SoundLoader.LoadAudioClip($"{_lastBadDirectory}\\{_lastBadSelected}") };
+                        }
                         ____badCutSoundEffectAudioClips = _lastBadAudioClips;
                     }
                 }
@@ -85,7 +96,7 @@ namespace SoundReplacer.Patches
                 }
                 else
                 {
-                    if (_lastGoodSelected == Plugin.CurrentConfig.GoodHitSound)
+                    if (_lastGoodSelected == Plugin.CurrentConfig.GoodHitSound && _lastGoodDirectory == Plugin.CurrentConfig.GoodHitSoundDirectory)
                     {
                         ____shortCutEffectsAudioClips = _lastGoodAudioClips;
                         ____longCutEffectsAudioClips = _lastGoodAudioClips;
@@ -93,7 +104,17 @@ namespace SoundReplacer.Patches
                     else
                     {
                         _lastGoodSelected = Plugin.CurrentConfig.GoodHitSound;
-                        _lastGoodAudioClips = new AudioClip[] { SoundLoader.LoadAudioClip(_lastGoodSelected) };
+                        _lastGoodDirectory = Plugin.CurrentConfig.GoodHitSoundDirectory;
+
+                        if (Plugin.CurrentConfig.GoodHitSound == "Random")
+                        {
+                            _lastGoodAudioClips = SoundLoader.LoadAudioClips(_lastGoodDirectory);
+                        }
+                        else
+                        {
+                            _lastGoodAudioClips = new AudioClip[] { SoundLoader.LoadAudioClip($"{_lastGoodDirectory}\\{_lastGoodSelected}") };
+                        }
+
                         ____shortCutEffectsAudioClips = _lastGoodAudioClips;
                         ____longCutEffectsAudioClips = _lastGoodAudioClips;
                     }
