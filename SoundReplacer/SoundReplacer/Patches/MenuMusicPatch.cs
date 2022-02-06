@@ -20,7 +20,7 @@ namespace SoundReplacer.Patches
         public class SongPreviewPlayerPatch
         {
             public static void Prefix(ref AudioClip ____defaultAudioClip)
-            {
+            { 
                 if (_originalMenuMusicClip == null)
                 {
                     _originalMenuMusicClip = ____defaultAudioClip;

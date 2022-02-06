@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.Components.Settings;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,33 +10,78 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 namespace SoundReplacer
-{
+{ 
     internal static class SoundLoader
     {
+        public static Dictionary<string, List<string>> GlobalSoundDictionary = new Dictionary<string, List<string>>();
         public static List<string> GlobalSoundList = new List<string>();
-        
         private static AudioClip _cachedEmpty;
+         
 
         public static void GetSoundLists()
         {
             GlobalSoundList.Add("None");
             GlobalSoundList.Add("Default");
+            GlobalSoundList.Add("Random");
 
             var folderPath = Environment.CurrentDirectory + "\\UserData\\SoundReplacer";
             if (!Directory.Exists(folderPath))
+            {
                 Directory.CreateDirectory(folderPath);
+            }
 
-            var files = Directory.GetFiles(folderPath);
+            // Load single audio files.
+            Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"Single files:");
+            CacheAudioPathFromDirectory(folderPath);
+
+            // Load files from directories.
+            var directiories = Directory.GetDirectories(folderPath);
+            foreach (var directory in directiories)
+            {
+                CacheAudioPathFromDirectory(directory);
+            }
+
+
+            Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"Finalizing:");
+            foreach (var entry in GlobalSoundDictionary)
+            {
+                Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"Key: {entry.Key}");
+                foreach (var sound in entry.Value)
+                {
+                    Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"Value: {sound}"); 
+                }
+            }
+            Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"------------");
+        }
+
+        private static void CacheAudioPathFromDirectory(string path)
+        { 
+            Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"Directory: {path}");
+            var directoryName = $"{path.Split(Path.DirectorySeparatorChar).Last()}";
+            GlobalSoundDictionary.TryGetValue(directoryName, out var sounds);
+            if (sounds == null)
+            {
+                sounds = new List<string>();
+                sounds.Add("None");
+                sounds.Add("Default");
+                sounds.Add("Random");
+                GlobalSoundDictionary.Add(directoryName, sounds);
+            }
+
+            var files = Directory.GetFiles(path);
             foreach (var file in files)
             {
+                Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"File: {file}");
                 var fileInfo = new FileInfo(file);
                 if (fileInfo.Extension == ".ogg" ||
                     fileInfo.Extension == ".mp3" ||
                     fileInfo.Extension == ".wav")
                 {
-                    GlobalSoundList.Add(fileInfo.Name);
+                    GlobalSoundList.Add($"{directoryName}\\{fileInfo.Name}");
+                    sounds.Add(fileInfo.Name);
                 }
             }
+            GlobalSoundDictionary[directoryName] = sounds;
         }
 
         private static string GetFullPath(string name)

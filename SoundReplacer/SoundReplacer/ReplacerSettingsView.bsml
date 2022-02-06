@@ -1,10 +1,20 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <vertical vertical-fit="PreferredSize" spacing="2">
-    <dropdown-list-setting options="good-hitsound-list" value="good-hitsound" text="Good hit sound" apply-on-change="true" />
-    <dropdown-list-setting options="bad-hitsound-list" value="bad-hitsound" text="Bad hit sound" apply-on-change="true" />
-    <dropdown-list-setting options="menu-music-list" value="menu-music" text="Menu music" apply-on-change="true" />
-    <dropdown-list-setting options="click-sound-list" value="click-sound" text="Click sound" apply-on-change="true" />
-    <dropdown-list-setting options="success-sound-list" value="success-sound" text="Level success" apply-on-change="true" />
-    <dropdown-list-setting options="fail-sound-list" value="fail-sound" text="Level fail" apply-on-change="true" />
-  </vertical>
+	<horizontal horizontal-fit="PreferredSize">
+		<vertical vertical-fit="PreferredSize"> 
+			<dropdown-list-setting options="good-hitsound-directories"	value="good-hitsound-directory-value"	text="Good hit sound"	apply-on-change="true"	bind-value="true"/>
+			<dropdown-list-setting options="bad-hitsound-directories"	value="bad-hitsound-directory-value"	text="Bad hit sound"	apply-on-change="true"	bind-value="true"/>
+			<dropdown-list-setting options="menu-music-directories"		value="menu-music-directory-value"		text="Menu music"		apply-on-change="true"	bind-value="true"/>
+			<dropdown-list-setting options="click-sound-directories"	value="click-sound-directory-value"		text="Click sound"		apply-on-change="true"	bind-value="true"/>
+			<dropdown-list-setting options="success-sound-directories"	value="success-sound-directory-value"	text="Level success"	apply-on-change="true"	bind-value="true"/>
+			<dropdown-list-setting options="fail-sound-directories"		value="fail-sound-directory-value"		text="Level fail"		apply-on-change="true"	bind-value="true"/>
+		</vertical>
+		<vertical vertical-fit="PreferredSize">
+			<dropdown-list-setting options="good-hitsound-list" value="good-hitsound-list-value"	text="" apply-on-change="true"	bind-value="true"	get-event='directory-list-reload'	 id='ddl-good-hitsound'/>
+			<dropdown-list-setting options="bad-hitsound-list"	value="bad-hitsound-list-value"		text="" apply-on-change="true"	bind-value="true"	get-event='directory-list-reload'	 id='ddl-bad-hitsound'/>
+			<dropdown-list-setting options="menu-music-list"	value="menu-music-list-value"		text="" apply-on-change="true"	bind-value="true"	get-event='directory-list-reload'	 id='ddl-menu-music'/>
+			<dropdown-list-setting options="click-sound-list"	value="click-sound-list-value"		text="" apply-on-change="true"	bind-value="true"	get-event='directory-list-reload'	 id='ddl-click-sound'/>
+			<dropdown-list-setting options="success-sound-list" value="success-sound-list-value"	text="" apply-on-change="true"	bind-value="true"	get-event='directory-list-reload'	 id='ddl-success-sound'/>
+			<dropdown-list-setting options="fail-sound-list"	value="fail-sound-list-value"		text="" apply-on-change="true"	bind-value="true"	get-event='directory-list-reload'	 id='ddl-fail-sound'/> 
+		</vertical>
+	</horizontal>
 </bg>
