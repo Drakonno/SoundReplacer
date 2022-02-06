@@ -34,7 +34,7 @@ namespace SoundReplacer.Patches
                 }
                 else
                 {
-                    if (_lastClickSelected == Plugin.CurrentConfig.ClickSound && _lastClickSelected == Plugin.CurrentConfig.ClickSoundDirectory)
+                    if (_lastClickSelected == Plugin.CurrentConfig.ClickSound && _lastDirectorySelected == Plugin.CurrentConfig.ClickSoundDirectory)
                     {
                         ____clickSounds = _lastClickClips;
                     }
