@@ -12,7 +12,7 @@ namespace SoundReplacer.Patches
     {
         private static AudioClip _originalMenuMusicClip;
         
-        private static AudioClip _lastMenuMusicClip;
+        private static AudioClip[] _lastMenuMusicClips;
         private static string _lastMusicSelected;
         private static string _lastDirectorySelected;
 
@@ -37,27 +37,25 @@ namespace SoundReplacer.Patches
                 }
                 else
                 {
-                    if (_lastMusicSelected == Plugin.CurrentConfig.MenuMusic && _lastDirectorySelected == Plugin.CurrentConfig.ClickSoundDirectory)
-                    {
-                        ____defaultAudioClip = _lastMenuMusicClip;
+                    if (_lastMusicSelected == Plugin.CurrentConfig.MenuMusic && _lastDirectorySelected == Plugin.CurrentConfig.MenuMusicDirectory)
+                    { 
+                        ____defaultAudioClip = _lastMenuMusicClips[Plugin.Instance.RandomEngine.Next(0, _lastMenuMusicClips.Length)];
                     }
                     else
                     {
                         _lastMusicSelected = Plugin.CurrentConfig.MenuMusic;
-                        _lastDirectorySelected = Plugin.CurrentConfig.ClickSoundDirectory;
-                        _lastMenuMusicClip = SoundLoader.LoadAudioClip(_lastMusicSelected);
+                        _lastDirectorySelected = Plugin.CurrentConfig.MenuMusicDirectory;
 
                         if (_lastMusicSelected == "Random")
                         {
-                            var loadedClips = SoundLoader.LoadAudioClips(_lastDirectorySelected); 
-                            _lastMenuMusicClip = loadedClips[Plugin.Instance.RandomEngine.Next(0, loadedClips.Length)];
+                            _lastMenuMusicClips = SoundLoader.LoadAudioClips(_lastDirectorySelected);
                         }
                         else
                         {
-                            _lastMenuMusicClip =SoundLoader.LoadAudioClip($"{_lastDirectorySelected}\\{_lastMenuMusicClip}");
+                            _lastMenuMusicClips = new AudioClip[] { SoundLoader.LoadAudioClip($"{_lastDirectorySelected}\\{_lastMusicSelected}") };
                         }
 
-                        ____defaultAudioClip = _lastMenuMusicClip;
+                        ____defaultAudioClip = _lastMenuMusicClips[Plugin.Instance.RandomEngine.Next(0, _lastMenuMusicClips.Length)];
                     }
                 }
             }
