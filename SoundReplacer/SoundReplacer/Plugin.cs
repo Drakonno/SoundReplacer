@@ -16,6 +16,8 @@ namespace SoundReplacer
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin
     {
+        public System.Random RandomEngine { get; private set; }
+
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
         internal static PluginConfig CurrentConfig { get; private set; }
@@ -26,6 +28,7 @@ namespace SoundReplacer
             Instance = this;
             Log = logger;
             CurrentConfig = config.Generated<PluginConfig>();
+            RandomEngine = new System.Random();
 
             SoundLoader.GetSoundLists();
             var harmony = new Harmony("com.otiosum.BeatSaber.SoundReplacer");

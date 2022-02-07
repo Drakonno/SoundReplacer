@@ -122,9 +122,12 @@ namespace SoundReplacer
 
         public static AudioClip[] LoadAudioClips(string directory)
         {
+
+            Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"LoadAudioClips: {directory}");
             List<AudioClip> output = new List<AudioClip>();
             foreach(var file in GlobalSoundDictionary[directory])
             {
+                if (file == "None" || file == "Default" || file == "Random") continue;
                 output.Add(LoadAudioClip($"{directory}\\{file}"));
             }
             return output.ToArray();
@@ -132,6 +135,7 @@ namespace SoundReplacer
 
         public static AudioClip LoadAudioClip(string name)
         {
+            Plugin.Log.Log(IPA.Logging.Logger.Level.Info, $"LoadAudioClip: {name}");
             var fullPath = GetFullPath(name);
             var request = GetRequest(fullPath);
 

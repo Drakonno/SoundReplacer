@@ -2,22 +2,22 @@
 {
     public class PluginConfig
     {
-        public string GoodHitSoundDirectory = "";
+        public string GoodHitSoundDirectory = "None";
         public string GoodHitSound = "Default";
 
-        public string BadHitSoundDirectory = "";
+        public string BadHitSoundDirectory = "None";
         public string BadHitSound = "Default";
 
-        public string MenuMusicDirectory = "";
+        public string MenuMusicDirectory = "None";
         public string MenuMusic = "Default";
 
-        public string ClickSoundDirectory = "";
+        public string ClickSoundDirectory = "None";
         public string ClickSound = "Default";
 
-        public string SuccessSoundDirectory = "";
+        public string SuccessSoundDirectory = "None";
         public string SuccessSound = "Default";
 
-        public string FailSoundDirectory = "";
+        public string FailSoundDirectory = "None";
         public string FailSound = "Default";
     }
 }
