@@ -18,5 +18,17 @@ Once you have sounds that you want to use, simply move them to Beat Saber instal
 
 ![folder](folder.png)
 
+## Advanced usage
+With new version, you can also group sounds in folders. To do that, just create a folder under  Beat Saber install directory -> UserData -> SoundReplacer -> YourNewFolder, and put sound files there.
+![folder-advanced-1](folder-advanced-1.jpg)
+![folder-advanced-2](folder-advanced-2.jpg)
+
+Folders can't be nested, so only one level of depth is supported. 
+
+Then in game, you can select if you want to use default SoundReplacer folder, or one of the other folders.
+
+## Random
+With new version, you can also select additionally a Random option. This will play a Random song from a selected directory. 
+
 ## Issues/constributing
 If you find any issue or you have a suggestion, you can use GitHub issues. If you want to contribute, this repo is accepting pull requests.
